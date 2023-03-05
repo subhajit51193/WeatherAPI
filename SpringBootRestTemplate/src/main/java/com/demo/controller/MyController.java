@@ -1,4 +1,4 @@
-package com.demo;
+package com.demo.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.demo.dto.Product;
 import com.demo.dto.WeatherInfo;
+import com.demo.service.CustomDetailService;
 
 
 
@@ -22,6 +23,9 @@ public class MyController {
 
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Autowired
+	private CustomDetailService customDetailService;
 	
 	//------------------------------------
 		//testing purpose only
@@ -56,6 +60,8 @@ public class MyController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("pincode", pincode);
 		ResponseEntity<WeatherInfo> re = restTemplate.getForEntity(url, WeatherInfo.class,map);
+		customDetailService.addCustomDetail(re.getBody(), pincode);
 		return re;
 	}
+	
 }
